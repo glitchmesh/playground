@@ -1,0 +1,29 @@
+{
+  "name": "glitchmesh-playground",
+  "version": "1.0.0",
+  "description": "Playground",
+  "main": "index.js",
+  "scripts": {
+    "start": "http-server",
+    "test": "standard"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/glitchmesh/playground.git"
+  },
+  "keywords": [
+    "glitchmesh"
+  ],
+  "author": "Caleb Troughton <caleb@imakewebthings.com> (http://imakewebthings.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/glitchmesh/playground/issues"
+  },
+  "homepage": "https://github.com/glitchmesh/playground",
+  "dependencies": {
+    "http-server": "^0.8.0"
+  },
+  "devDependencies": {
+    "standard": "^4.0.1"
+  }
+}
