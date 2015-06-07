@@ -1,0 +1,13 @@
+doctype html
+html(lang='en')
+  head
+    title Playground
+    meta(charset='utf-8')
+    script(type='text/javascript').
+      window.webSocketEndpoint = "#{webSocketEndpoint}"
+    script(src='main.js')
+  body
+    h1 Things
+    video
+    form#send
+      input#text(type='text')

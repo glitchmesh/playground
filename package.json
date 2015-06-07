@@ -4,7 +4,7 @@
   "description": "Playground",
   "main": "index.js",
   "scripts": {
-    "start": "http-server",
+    "start": "NODE_ENV=production harp server --port 3031",
     "test": "standard"
   },
   "repository": {
@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/glitchmesh/playground",
   "dependencies": {
-    "http-server": "^0.8.0"
+    "harp": "^0.17.0"
   },
   "devDependencies": {
     "standard": "^4.0.1"
