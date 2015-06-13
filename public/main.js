@@ -1,5 +1,8 @@
 var sending = false
 var socket = new WebSocket(window.webSocketEndpoint)
+var imageContainers = []
+var cycleStep = 0
+var textToSend = ''
 
 navigator.getMedia = navigator.getUserMedia ||
   navigator.webkitGetUserMedia ||
@@ -9,6 +12,12 @@ navigator.getMedia = navigator.getUserMedia ||
 socket.onopen = initPage
 
 function initPage () {
+  socket.send(JSON.stringify({
+    channel: 'sender receiver'
+  }))
+
+  socket.onmessage = handleMessage
+
   navigator.getMedia({
     audio: false,
     video: {
@@ -19,6 +28,8 @@ function initPage () {
       ]
     }
   }, streamSuccess, streamError)
+
+  setInterval(cycleImages, 100)
 }
 
 function streamSuccess (stream) {
@@ -40,11 +51,15 @@ function streamError (err) {
 
 function initSender (video) {
   document.getElementById('send').addEventListener('submit', function (event) {
+    var text = document.getElementById('text')
     event.preventDefault()
     if (sending) {
       return
     }
+    textToSend = text.value
+    text.value = ''
     sending = true
+    document.querySelector('aside').className = 'sending'
     startCapture(video)
   })
 }
@@ -82,15 +97,63 @@ function captureImages (images, options, callback) {
     }
   } catch (e) {
     console.log('Error capturing images ' + e.message)
-    sending = false
+    enableSending()
   }
 }
 
 function sendImages (images) {
-  sending = false
-
   socket.send(JSON.stringify({
-    text: document.getElementById('text').value,
+    text: textToSend,
     images: images
   }))
+  enableSending()
+}
+
+function enableSending() {
+  document.querySelector('aside').className = '';
+  sending = false
+}
+function handleMessage (message) {
+  message = JSON.parse(message.data)
+  appendMessage(message)
+  limitMessageCount()
+  autoScroll()
+}
+
+function appendMessage(message) {
+  var messageContainer = document.createElement('div')
+  var images = message.images.map(function (src) {
+    return '<img src="' + src + '">'
+  }).join('')
+  var imagesContainer = '<div class="message-images">' + images + '</div>'
+  var text = '<p class="message-text">' + message.text + '</p>'
+  messageContainer.className = 'message'
+  messageContainer.innerHTML = imagesContainer + text
+  document.querySelector('main').appendChild(messageContainer)
+  imageContainers.push(messageContainer.firstChild)
+}
+
+function limitMessageCount() {
+  var messages = document.querySelectorAll('.message')
+  if (messages.length > 5) {
+    imageContainers.shift()
+    messages[0].parentNode.removeChild(messages[0])
+  }
+}
+
+function cycleImages() {
+  var oldStep = cycleStep
+
+  cycleStep = (cycleStep + 1) % 20
+  imageContainers.forEach(function (container) {
+    var images = container.childNodes
+    images.item(oldStep).style.display = 'none'
+    images.item(cycleStep).style.display = 'block'
+  })
+}
+
+function autoScroll() {
+  window.setTimeout(function () {
+    window.scrollTo(0, 999999)
+  }, 100);
 }
