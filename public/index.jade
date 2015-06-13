@@ -6,10 +6,10 @@ html(lang='en')
     link(href='styles.css' rel='stylesheet')
     script(type='text/javascript').
       window.webSocketEndpoint = "#{webSocketEndpoint}"
-    script(src='main.js')
   body
     aside
       form#send
         input#text(type='text')
       video
     main
+    script(src='main.js')

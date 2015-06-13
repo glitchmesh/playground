@@ -1,0 +1,5 @@
+{
+  "globals": {
+    "webSocketEndpoint": "ws://localhost:3030"
+  }
+}

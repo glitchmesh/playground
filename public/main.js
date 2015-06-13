@@ -1,5 +1,5 @@
 var sending = false
-var socket = new WebSocket(window.webSocketEndpoint)
+var socket = new window.WebSocket(window.webSocketEndpoint)
 var imageContainers = []
 var cycleStep = 0
 var textToSend = ''
@@ -109,8 +109,8 @@ function sendImages (images) {
   enableSending()
 }
 
-function enableSending() {
-  document.querySelector('aside').className = '';
+function enableSending () {
+  document.querySelector('aside').className = ''
   sending = false
 }
 function handleMessage (message) {
@@ -120,7 +120,7 @@ function handleMessage (message) {
   autoScroll()
 }
 
-function appendMessage(message) {
+function appendMessage (message) {
   var messageContainer = document.createElement('div')
   var images = message.images.map(function (src) {
     return '<img src="' + src + '">'
@@ -133,7 +133,7 @@ function appendMessage(message) {
   imageContainers.push(messageContainer.firstChild)
 }
 
-function limitMessageCount() {
+function limitMessageCount () {
   var messages = document.querySelectorAll('.message')
   if (messages.length > 5) {
     imageContainers.shift()
@@ -141,7 +141,7 @@ function limitMessageCount() {
   }
 }
 
-function cycleImages() {
+function cycleImages () {
   var oldStep = cycleStep
 
   cycleStep = (cycleStep + 1) % 20
@@ -152,8 +152,8 @@ function cycleImages() {
   })
 }
 
-function autoScroll() {
+function autoScroll () {
   window.setTimeout(function () {
     window.scrollTo(0, 999999)
-  }, 100);
+  }, 100)
 }
